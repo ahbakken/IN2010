@@ -8,8 +8,9 @@ class Node:
     self.rightChild = None
     self.parent = None
     
-# algorithm for inserting new nodes to the binary tree
+# Inserting new nodes to the binary tree
   def set_next_node(self, element):
+    # check if new node will go on right or left side
     if self.element> element:
         if self.leftChild == None:
             self.leftChild = Node(element)
@@ -21,54 +22,31 @@ class Node:
         else:
             self.rightChild.set_next_node(element)
     return self
-    
-#   def get_next_node(self):
-#     return self.child
-  
-  def get_value(self):
-    return self.element
+
+# Find node with element value x
+  def find_node_value(self, x):
+    if self == None:
+      return None
+    elif self.element == x:
+      return self
+    elif x<self.element:
+      if self.leftChild == None:
+        return None
+      return self.leftChild.find_node_value(x)
+    elif x>self.element:
+      if self.rightChild == None:
+        return None
+      return self.rightChild.find_node_value(x)
 
 
-root = Node(1)
+# Initialize class, insert new nodes to the tree
+root = Node(15)
 root.set_next_node(2)
-root.set_next_node(3)
-root.set_next_node(4)
-root.set_next_node(5)
 root.set_next_node(6)
+root.set_next_node(23)
+root.set_next_node(44)
+root.set_next_node(12)
 
-print(root.rightChild.element)
+print("Root element value: ", root.element)
 
-# # Algorithm to find depth of a given node
-# def depth(self):
-#     if self == None:
-#         return -1
-#     return 1+depth(self.parent)
-
-# print('Depth e1:', depth(root))
-
-# # Algorithm to find height of a given node
-# def height(self):
-#     h = -1
-#     if self==None:
-#         return h
-#     for i in self.child:
-#         h = max(h, height(i))
-#     return 1+h
-
-# print('Height e1:', height(root))
-
-# # preorder traversing
-# def preorder(self):
-#     print("Preorder element:", self.element)
-#     for i in self.child:
-#         preorder(i)
-
-# preorder(root)
-
-# # postorder traversing
-# def postorder(self):
-#     for i in self.child:
-#         postorder(i)
-#     print('Postorder element:', self.element)
-
-# postorder(root)
+print("Find node with value x: ", (root.find_node_value(144)))
