@@ -5,7 +5,6 @@
 # size(set) gir antall elementer i mengden
 
 from fileinput import filename
-import string
 
 #Sjekker om x er i mengden og returnerer True om den er det
 def contains(mengden, x):
@@ -14,7 +13,6 @@ def contains(mengden, x):
         if i == x:
             check = True
     return check
-
 
 # setter x inn i mengden (uten duplikater, ved aa bruke contains)
 def insert(mengden, x):
@@ -50,15 +48,21 @@ mengde = set()
 while x < i:
     line = f.readline()
     if line.startswith("insert"):
-        verdi = int(line[-2])
+        tall = line.split(' ')
+        verdi = int(tall[-1])
         mengde = (insert(mengde, verdi))
     if line.startswith("contains"):
-        verdi = int(line[-2])
-        print(contains(mengde, verdi))
+        tall = line.split(' ')
+        verdi = int(tall[-1])
+        if contains(mengde, verdi):
+            print("true")
+        else: print("false")
     if line.startswith("remove"):
-        verdi = int(line[-2])
+        tall = line.split(' ')
+        verdi = int(tall[-1])
         mengde = remove(mengde, verdi)
     if line.startswith("size"):
         print(size(mengde))
     x+=1
+    # print(mengde)
 f.close()
