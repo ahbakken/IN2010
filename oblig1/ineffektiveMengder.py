@@ -5,9 +5,7 @@
 # size(set) gir antall elementer i mengden
 
 from fileinput import filename
-
-
-mengden = {1, 3, 53 ,2 ,5,24}
+import string
 
 #Sjekker om x er i mengden og returnerer True om den er det
 def contains(mengden, x):
@@ -17,7 +15,6 @@ def contains(mengden, x):
             check = True
     return check
 
-print(contains(mengden, 2))
 
 # setter x inn i mengden (uten duplikater, ved aa bruke contains)
 def insert(mengden, x):
@@ -27,8 +24,6 @@ def insert(mengden, x):
         mengden.add(x)
         return mengden
 
-print(insert(mengden, 153))
-
 # fjerner x fra mengden
 def remove(mengden, x):
     newSet = set()
@@ -37,8 +32,6 @@ def remove(mengden, x):
             newSet.add(i)
     return newSet
 
-print(remove(mengden, 153))
-
 # gir antall elementer i mengden
 def size(mengden):
     counter = 0
@@ -46,14 +39,26 @@ def size(mengden):
         counter+=1
     return counter
 
-print(size(mengden))
-
+# opner fil som stdin
 filename = input("Enter filname: ")
 f = open(filename, 'r')
+i = int(f.readline())
+x = 0
+mengde = set()
 
-
-
-
-
-
+# itererer gjennom fil for aa utfore oppgaver.
+while x < i:
+    line = f.readline()
+    if line.startswith("insert"):
+        verdi = int(line[-2])
+        mengde = (insert(mengde, verdi))
+    if line.startswith("contains"):
+        verdi = int(line[-2])
+        print(contains(mengde, verdi))
+    if line.startswith("remove"):
+        verdi = int(line[-2])
+        mengde = remove(mengde, verdi)
+    if line.startswith("size"):
+        print(size(mengde))
+    x+=1
 f.close()
