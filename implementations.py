@@ -53,3 +53,4 @@ print(removeMin(tree))
 
 print(tree)
 print(len(tree))
+
