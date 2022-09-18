@@ -1,6 +1,6 @@
 #sorting
 #input: array with n elements
-#output: sortet array with the same n elements
+#output: a sortet array with the same n elements
 
 #bubble sort
 def bubbleSort(array):
@@ -34,7 +34,7 @@ def selectionSort(array):
         if i != k:  
             array[i], array[k] = array[k], array[i] #swap place for i and the smallest element after i
         i+=1
-        print(array)
+        #print(array)
     return array
 
 inputList = [1, 5, 12, 34, 54, 42, 33, 65, 56, 555, 64, 13 ,47 , 0]
@@ -42,3 +42,21 @@ print("Before selection sort", inputList)
 print("After  selection sort", selectionSort(inputList))
 print("__________________________________________________________")
 
+#insertion sort
+def insertionSort(array):
+    n = len(array)
+    i = 1
+    while (i < n): #iterate throught the array, stop after n-1
+        j = i
+        while (j > 0 and array[j-1] > array[j]):
+            array[j-1], array[j] = array[j], array[j-1]
+            j = j-1
+            #print(array)
+        i+=1
+        
+    return array
+
+inputList = [1, 5, 12, 34, 54, 42, 33, 65, 56, 555, 64, 13 ,47 , 0]
+print("Before insertion sort", inputList)
+print("After  insertion sort", insertionSort(inputList))
+print("__________________________________________________________")
