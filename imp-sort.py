@@ -60,3 +60,43 @@ inputList = [1, 5, 12, 34, 54, 42, 33, 65, 56, 555, 64, 13 ,47 , 0]
 print("Before insertion sort", inputList)
 print("After  insertion sort", insertionSort(inputList))
 print("__________________________________________________________")
+
+#heapsort
+#build max-heap, help procedure for heapsort
+from logging import LoggerAdapter
+import math
+from turtle import right
+def buildMaxHeap(array, n):
+    i = int(math.floor(n/2))
+    while i >= 0:
+        bubbleDown(array, i, n)
+        i-=1
+
+#bubble down, help procedure for build max-heap
+def bubbleDown(array, i, n):
+    largest = i
+    left = 2*i + 1
+    right = 2*i + 2
+    if left < n and array[largest] < array[left]:
+        largest, left = left, largest
+    if right < n and array[largest] < array[right]:
+        largest, right = right, largest
+    if i != largest:
+        array[i], array[largest] = array[largest], array[i]
+        bubbleDown(array, largest, n)
+
+#heapsort
+def heapSort(array):
+    buildMaxHeap(array, len(array))
+    i = len(array)-1
+    while i >= 0:
+        array[0], array[i] = array[i], array[0]
+        bubbleDown(array, i, len(array))
+        i-=1
+    return array
+
+
+inputList = [1, 5, 12, 34, 54, 42, 33, 65, 56, 555, 64, 13 ,47 , 0]
+print("Before heapsort sort", inputList)
+print("After  heapsort sort", heapSort(inputList))
+print("__________________________________________________________")
