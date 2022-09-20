@@ -14,7 +14,7 @@ def contains(mengden, x):
             check = True
     return check
 
-# setter x inn i mengden (uten duplikater, ved aa bruke contains)
+# setter x inn i binaertreet
 def insert(mengden, x):
     if(contains(mengden, x)):
         return mengden
@@ -44,6 +44,8 @@ i = int(f.readline())
 x = 0
 mengde = set()
 
+# lag mengde først, så iterer gjennom denne og insert
+# dette vil forhindre 
 # itererer gjennom fil for aa utfore oppgaver.
 while x < i:
     line = f.readline()
