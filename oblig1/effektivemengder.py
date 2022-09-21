@@ -4,8 +4,8 @@
 # remove(set, x) fjerner x fra mengden
 # size(set) gir antall elementer i mengden
 
-import math
 from fileinput import filename
+from this import s
 
 #Lager noder for treet
 class Node:
@@ -16,7 +16,7 @@ class Node:
     self.height = height
     
 # setter x inn i binaertreet or returnerer noden med x
-# antar at treet er balansert og faar: O(log(n))
+# antar at treet er balansert og som gir: O(log(n))
 def insert(root, x, h):
     if root.val == None:
         root = Node(x, h)
@@ -24,6 +24,7 @@ def insert(root, x, h):
         root.right = insert(root.right, x, h+1)
     else:
         root.left = insert(root.left, x, h+1)
+    #Update size()
     return root
 
 # sjekker om x er i treet 
@@ -38,6 +39,11 @@ def contains(root, x):
     if x > root.val:
         return contains(root.right, x)
 
+def remove(root, x):
+    #find the root and remove
+    #return the root removed
+    return root
+
 #lager tom rotnode, uten innhold, hoyde -1
 root = Node(None, -1)
 print(root.val, root.height)
@@ -49,7 +55,7 @@ filename = input("Enter filname: ")
 f = open(filename, 'r')
 i = int(f.readline())
 x = 0
-mengde = set()
+liste = (root)
 
 
 # itererer gjennom fil for aa utfore oppgaver.
@@ -64,7 +70,8 @@ while x < i:
             root.height = 0
     #om root har en verdi vil insert brukes
         else:
-            mengde.add(insert(root, verdi, 0)
+            liste.append(insert(root, verdi, 0))
+
     if line.startswith("contains"):
         tall = line.split(' ')
         verdi = int(tall[-1])
@@ -74,9 +81,7 @@ while x < i:
     if line.startswith("remove"):
         tall = line.split(' ')
         verdi = int(tall[-1])
-        mengde = remove(root, verdi)
+        liste.remove(remove(root, verdi))
     if line.startswith("size"):
-        print(size(mengde))
+        print(len(liste))
 f.close()
-
-
