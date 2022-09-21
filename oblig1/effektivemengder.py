@@ -5,7 +5,6 @@
 # size(set) gir antall elementer i mengden
 
 from fileinput import filename
-from this import s
 
 #Lager noder for treet
 class Node:
@@ -16,47 +15,67 @@ class Node:
     self.height = height
     
 # setter x inn i binaertreet or returnerer noden med x
-# antar at treet er balansert og som gir: O(log(n))
+# antar at treet er balansert ved insert, som gir: O(log(n))
 def insert(root, x, h):
-    if root.val == None:
+    if root == None or root.val == None:
         root = Node(x, h)
     elif (root.val < x):
         root.right = insert(root.right, x, h+1)
     else:
         root.left = insert(root.left, x, h+1)
-    #Update size()
     return root
 
 # sjekker om x er i treet 
 # har samme kompleksitet som insert: O(log(n))
 def contains(root, x):
-    if root.val == None:
-        return None
+    if root == None or root.val == None:
+        return False
     if root.val == x:
-        return root
+        return True
     if x < root.val:
         return contains(root.left, x)
     if x > root.val:
         return contains(root.right, x)
 
+#hjelpeprosedyre, finner minste verdi i root
+#skal finnes lengst til venstre i treet. 
+def findMin(root):
+    if root == None or root.val == None:
+        return root
+    if root.left != None:
+        return findMin(root.left)
+    else: return root
+
+#fjerner en node fra treet basert paa verdien som blir sendt inn. 
 def remove(root, x):
-    #find the root and remove
-    #return the root removed
+    if root == None or root.val == None:
+        return None
+    if x < root.val:
+        root.left = remove(root.left, x)
+        return root
+    if x > root.val:
+        root.right = remove(root.right, x)
+        return root
+    if root.left == None:
+        return root.right
+    if root.right == None:
+        return root.right
+    holder = findMin(root.right)
+    root.val = holder.val
+    root.right = remove(root.right, holder.val)
     return root
 
 #lager tom rotnode, uten innhold, hoyde -1
-root = Node(None, -1)
-print(root.val, root.height)
-root = insert(root, 3, 0)
-print(root.val, root.height)
+root = None
 
 # opner fil som stdin
 filename = input("Enter filname: ")
 f = open(filename, 'r')
 i = int(f.readline())
 x = 0
-liste = (root)
-
+liste = [root]
+#oppdateres for hver gang en ny node legges til eller trekkes fra 
+sizeList = len(liste)
 
 # itererer gjennom fil for aa utfore oppgaver.
 while x < i:
@@ -65,23 +84,28 @@ while x < i:
         tall = line.split(' ')
         verdi = int(tall[-1])
     # setter inn roten forst
-        if (root.val == None): 
-            root.val = verdi
-            root.height = 0
+        if (root == None): 
+            root = Node(verdi, 0)
     #om root har en verdi vil insert brukes
         else:
-            liste.append(insert(root, verdi, 0))
-
-    if line.startswith("contains"):
+            if (not contains(root, verdi)):
+                liste.append(insert(root, verdi, 0))
+                sizeList = len(liste)
+    elif line.startswith("contains"):
         tall = line.split(' ')
         verdi = int(tall[-1])
         if contains(root, verdi):
             print("true")
         else: print("false")
-    if line.startswith("remove"):
+    elif line.startswith("remove"):
         tall = line.split(' ')
         verdi = int(tall[-1])
-        liste.remove(remove(root, verdi))
-    if line.startswith("size"):
-        print(len(liste))
+        if contains(root, verdi):
+            rem = remove(root, verdi)
+            if (rem != None):
+                liste.remove(rem)
+                sizeList = len(liste)
+    elif line.startswith("size"):
+        print(sizeList)
+    x+=1
 f.close()
