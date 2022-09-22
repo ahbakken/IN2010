@@ -74,7 +74,7 @@ def remove(root, x):
         temp = findMin(root.right)
         root.val = temp.val
         root.right = remove(root.right, temp.val)
-        print("REMOVE root value", root.val)
+        print(root.val)
     return root
 
 
