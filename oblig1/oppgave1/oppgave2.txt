@@ -1,0 +1,25 @@
+oblig 1 - oppgave 2 
+(a)
+#sett element bakerst i koen
+proc push_back(queue, x):
+	#kontatererer to lister, setter x bakerst
+	queue2 <- queue + [x]
+	return queue2
+
+#sett element fremst i koen
+proc push_front(queue, x):
+	#kontatererer to lister, setter x fremst
+	queue2 <- [x] + queue
+	return queue2
+
+#sett element i midten av koen 
+proc push_middle(queue, x):
+	#finner halvparten av lengden av listen, rundet ned, endrer fra float til int
+	half = int(round_down(lenght(queue)/2))
+	#konkatenerer til en liste, starter med forste element i liste til half
+	queue2 = queue[0:half] + [x] + queue[half+1:-1]
+	return queue2
+
+#print element nummer x i koen
+proc get(queue, x):
+	print(queue[x])
