@@ -1,0 +1,81 @@
+oblig 1
+oppgave 2 
+(a)
+#sett element bakerst i koen
+proc push_back(queue, x):
+	#kontatererer to lister, setter x bakerst
+	return queue.add(x)
+
+#sett element fremst i koen
+proc push_front(queue, x):
+	#kontatererer to lister, setter x fremst
+	queue2 = [x] + queue
+	return queue2
+
+#sett element i midten av koen 
+proc push_middle(queue, x):
+	#finner halvparten av lengden av listen, rundet ned, endrer fra float til int
+	half = int(round_down(lenght(queue)/2))
+	#konkatenerer til en liste, starter med forste element i liste til half
+	queue2 = queue[0:half] + [x] + queue[half+1:-1]
+	return queue2
+
+#print element nummer x i koen
+proc get(queue, x):
+	print(queue[x])
+
+
+-----------------------------------------------
+(c)
+Bruker som en kilde fra
+https://wiki.python.org/moin/TimeComplexity
+
+Verste tilfelle kjoretidsanalyse 
+• push_back = O(1)
+	Bruker append som er O(1)
+• push_front
+	Bruker insert som er O(n)
+	Fordi insert maa loope gjennom 1 gang for aa flytte 
+• push_middle
+	Use len() that is O(1)
+• get
+	get is O(1)
+
+
+-----------------------------------------------
+(d)
+Vi kan bruke ubegrenset N til aa se hva en algoritme trender til nar den maa kjores veldig mange ganger. 
+
+Naar dette er begrenset til x kan vi vite mer noyaktig hvor lang tid det vil ta aa kjore en algoritme.
+
+-----------------------------------------------
+oppgave3
+(a)
+#pseudokode for treet
+#lager liste som holder alle linjene som lister
+liste = []
+kitten = 0
+for line in file.input():
+	if len(line) is 1:
+		kitten = int(line)
+	elif line is not -1:
+		liste.add(line)
+
+#funksjon som finner forelder til tall
+proc find_parent(num, list):
+	for sublist in list:
+		i = 1
+		while i < len(sublist):
+			if sublist[i] is num:
+				return list[0]
+			i+=1
+		return -1
+	
+path = [kitten]
+
+parent = 0
+while parent is not -1:
+	parent = find_parent(path, kitten)
+	path.add(parent)
+
+print(*path)
