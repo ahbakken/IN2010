@@ -11,21 +11,22 @@ for line in fileinput.input():
 			kitten = int(line)
 		else:
 			liste.append(linje)
-
 #funksjon som finner forelder til tall
-def find_parent(num, list):
+def find_parent(list, num):
 	for sublist in list:
 		i = 1
 		while i < len(sublist):
-			if int(sublist[i]) is num:
-				return list[0]
+			if int(sublist[i]) == num:
+				return int(sublist[0])
 			i+=1
+	return -1
 	
-path = [kitten]
+path = []
 
-parent = 0
+parent = kitten
 while parent != -1:
-	parent = find_parent(path, kitten)
 	path.append(parent)
+	parent = find_parent(liste, parent)
+	
 
 print(*path)
