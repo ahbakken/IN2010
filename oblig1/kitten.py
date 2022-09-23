@@ -11,6 +11,7 @@ for line in fileinput.input():
 			kitten = int(line)
 		else:
 			liste.append(linje)
+
 #funksjon som finner forelder til tall
 def find_parent(list, num):
 	for sublist in list:

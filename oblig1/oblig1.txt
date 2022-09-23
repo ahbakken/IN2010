@@ -85,7 +85,7 @@ print(path)
 oppgave4
 (a)
 proc arrToBST(array):
-	if len(array)<3:
+	if len(array)<2:
 		return array
 
 	mid = round_down(len(array)/2)
@@ -94,4 +94,8 @@ proc arrToBST(array):
     right = arrToBST(array[mid+1:])
 
     return [array[mid]] + left + right
+
+-----------------------------------------------
+(b)
+#gjore sortert aray (liste) om til en heap
 
