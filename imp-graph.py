@@ -18,15 +18,15 @@ def dfsFull(graph):
         if v[0] not in visited:
             dfsVisit(graph, v[0], visited)
 
-print("\n---------------START RECURSTION----------------\n")
+#print("\n---------------START RECURSTION----------------\n")
 
 v = {'a', 'b', 'c', 'd', 'e'}
-e = {('a', 'b'), ('b', 'c'), ('c', 'a'), ('e', 'd')}
+e = {('a', 'b'), ('b', 'c'), ('c', 'a'), ('e', 'd'), ('a', 'c')}
 g = [v, e]
 
 dfsFull(g)
 
-print("\n---------------START ITERATIVE----------------\n")
+#print("\n---------------START ITERATIVE----------------\n")
 #Iterative
 #visit
 def dfsVisitIT(graph, start, visited):
@@ -46,3 +46,29 @@ def dfsFullIT(graph):
             dfsVisitIT(graph, v[0], visited)
 
 dfsFullIT(g)
+
+#Breadth-first search
+print("\n---------------START Breadth-first----------------\n")
+
+def wfsVisit(graph, start, visited):
+    queue = [start]
+    visited.add(start) #visits the start node first, should be added????
+    while len(queue)>0:
+        u = queue.pop(0) #dequeue, remove from start of list, index 0
+        for uv in graph[1]: #iterating through all the edges
+            if uv[0] == u and uv[1] not in visited:
+                visited.add(uv[1])
+                queue.append(uv[1]) #enqueue, add to end of list
+        
+
+def wfsFull(graph):
+    visited = set()
+    for node in graph[0]:
+        if node not in visited:
+            wfsVisit(graph, node, visited)
+    print('visited F',visited, '\n')
+    
+        
+wfsFull(g)
+
+
