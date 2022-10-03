@@ -100,13 +100,30 @@ def topSort(graphDict):
                 tempDict[uv] = tempVal #updates the value in the Temp-graph
             if indegree(tempDict, uv) == 0:
                 stack.append(uv)
-        print('OUTPUT LIST', output)
-        print('temp graph dict', tempDict)
+        # print('OUTPUT LIST', output)
+        # print('temp graph dict', tempDict)
+    if len(output)<len(graphDict):
+        print('Error: Graph contains a cycle and cannot be topologically ordered.')
     return output 
-
 
 gdict = {'a': ('b', 'e'), 'b': ('c'), 'c': [], 'd': [], 'e':('d')}
 # print(gdict['a'])
 
-print(topSort(gdict))
+# print(topSort(gdict))
+#topological sorting, DFS
+def dfsTopSort(graph):
+    stack = []
+    visited = set()
+    for u in graph[0]:
+        if u not in visited:
+            dfsVisitMod(graph, u, visited, stack)
+    return stack
 
+def dfsVisitMod(graph, u, visited, stack):
+    visited.add(u)
+    for uv in graph[1]:
+        if uv[1] not in visited:
+            dfsVisitMod(graph, uv[1], visited, stack)
+    stack.append(u)
+
+print(dfsTopSort(g))
