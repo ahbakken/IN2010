@@ -1,10 +1,10 @@
 #graphs, traversal, topological sorting
-#Depth first search, 
 #G = (V, E), 
 #   V is set with nodes 
 #   E is set with edges (node pairs that are connected)
-#Recursive
 
+#Depth first search, 
+#Recursive
 #visit
 def dfsVisit(graph, start, visited):
     visited.add(start)
@@ -23,6 +23,8 @@ def dfsFull(graph):
 v = {'a', 'b', 'c', 'd', 'e'}
 e = {('a', 'b'), ('b', 'c'), ('c', 'a'), ('e', 'd'), ('a', 'c')}
 g = [v, e]
+
+
 
 dfsFull(g)
 
@@ -48,7 +50,7 @@ def dfsFullIT(graph):
 dfsFullIT(g)
 
 #Breadth-first search
-print("\n---------------START Breadth-first----------------\n")
+# print("\n---------------START Breadth-first----------------\n")
 
 def wfsVisit(graph, start, visited):
     queue = [start]
@@ -66,9 +68,45 @@ def wfsFull(graph):
     for node in graph[0]:
         if node not in visited:
             wfsVisit(graph, node, visited)
-    print('visited F',visited, '\n')
+    #print('visited F',visited, '\n')
     
         
 wfsFull(g)
 
+def indegree(dict, key):
+    deg = 0
+    for v in dict:
+        if key in dict.get(v):
+            deg+=1
+    return deg
+
+#topological sorting, use dictionary for V (keyes) and E *(values)
+def topSort(graphDict):
+    tempDict = graphDict #Temp-graph used for sorting
+    stack = []
+    output = [] #list of ordered nodes
+    for v in tempDict: #the nodes (is the keys)
+        if indegree(tempDict, v) == 0: #check how many keyes have list key in their value (list of nodes they connect to)
+            stack.append(v) #push v onto the stack
+    while len(stack)>0:
+        u = stack.pop() #remove from the stack
+        output.append(u)
+        if u in tempDict:
+            tempDict.pop(u)
+        for uv in tempDict:
+            if u in tempDict.get(uv): #remove u from the value list in dict
+                tempVal = tempDict.get(uv) #hold the list of edges (value) for this key
+                tempVal.remove(u) #removes the edge/connection
+                tempDict[uv] = tempVal #updates the value in the Temp-graph
+            if indegree(tempDict, uv) == 0:
+                stack.append(uv)
+        print('OUTPUT LIST', output)
+        print('temp graph dict', tempDict)
+    return output 
+
+
+gdict = {'a': ('b', 'e'), 'b': ('c'), 'c': [], 'd': [], 'e':('d')}
+# print(gdict['a'])
+
+print(topSort(gdict))
 
