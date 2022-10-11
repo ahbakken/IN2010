@@ -168,3 +168,4 @@ cython_debug/
 #PDF files
 *.pdf
 *.docx
+*.class
