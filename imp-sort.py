@@ -15,10 +15,10 @@ def bubbleSort(array):
         i+= 1
     return array
 
-inputList = [1, 5, 12, 34, 54, 42, 33, 65, 56, 555, 64, 13 ,47 , 0]
-print("Before bubble sort", inputList)
-print("After  bubble sort", bubbleSort(inputList))
-print("__________________________________________________________")
+# inputList = [1, 5, 12, 34, 54, 42, 33, 65, 56, 555, 64, 13 ,47 , 0]
+# print("Before bubble sort", inputList)
+# print("After  bubble sort", bubbleSort(inputList))
+# print("__________________________________________________________")
 
 #selection sort
 def selectionSort(array):
@@ -37,10 +37,10 @@ def selectionSort(array):
         #print(array)
     return array
 
-inputList = [1, 5, 12, 34, 54, 42, 33, 65, 56, 555, 64, 13 ,47 , 0]
-print("Before selection sort", inputList)
-print("After  selection sort", selectionSort(inputList))
-print("__________________________________________________________")
+# inputList = [1, 5, 12, 34, 54, 42, 33, 65, 56, 555, 64, 13 ,47 , 0]
+# print("Before selection sort", inputList)
+# print("After  selection sort", selectionSort(inputList))
+# print("__________________________________________________________")
 
 #insertion sort
 def insertionSort(array):
@@ -56,16 +56,16 @@ def insertionSort(array):
         
     return array
 
-inputList = [1, 5, 12, 34, 54, 42, 33, 65, 56, 555, 64, 13 ,47 , 0]
-print("Before insertion sort", inputList)
-print("After  insertion sort", insertionSort(inputList))
-print("__________________________________________________________")
+# inputList = [1, 5, 12, 34, 54, 42, 33, 65, 56, 555, 64, 13 ,47 , 0]
+# print("Before insertion sort", inputList)
+# print("After  insertion sort", insertionSort(inputList))
+# print("__________________________________________________________")
 
 #heapsort
 #build max-heap, help procedure for heapsort
 from logging import LoggerAdapter
 import math
-from turtle import right
+from turtle import left, right
 def buildMaxHeap(array, n):
     i = int(math.floor(n/2))
     while i >= 0:
@@ -96,7 +96,42 @@ def heapSort(array):
     return array
 
 
+# inputList = [1, 5, 12, 34, 54, 42, 33, 65, 56, 555, 64, 13 ,47 , 0]
+# print("Before heapsort sort", inputList)
+# print("After  heapsort sort", heapSort(inputList))
+# print("__________________________________________________________")
+
+#quicksort
+#moves elements that are smaller left, and bigger rigth than a given index
+def partition(A, low, high):
+    # p = int(math.floor((len(A)/2)))
+    p = 0
+    A[p], A[high] = A[high], A[p]
+    pivot = A[high]
+    left = low
+    right = high - 1
+    while left <= right:
+        while left <= right and A[left] <= pivot:
+            left+=1
+        while right >= left and A[right] >= pivot:
+            right-=1
+        if left < right:
+            A[left], A[right] = A[right], A[left]
+
+    A[left], A[right] = A[right], A[left]
+    return left
+
+def quickSort(A, low, high):
+    if low >= high:
+        return A
+    p = partition(A, low, high)
+    quickSort(A, low, p-1)
+    quickSort(A, p+1, high)
+    return A
+
+
+
 inputList = [1, 5, 12, 34, 54, 42, 33, 65, 56, 555, 64, 13 ,47 , 0]
-print("Before heapsort sort", inputList)
-print("After  heapsort sort", heapSort(inputList))
+print("Before quicksort sort", inputList)
+print("After  quicksort sort", quickSort(inputList, 0, (len(inputList)-1)))
 print("__________________________________________________________")
