@@ -33,7 +33,7 @@ def merge(A1, A2, A):
     return A
 
 
-# TEST
-inputList = [80, 91, 7, 33, 50, 70, 13, 321, 12]
-countA = CountSwaps([CountCompares(x) for x in inputList])
-print(sort(countA))
+# # TEST
+# inputList = [80, 91, 7, 33, 50, 70, 13, 321, 12]
+# countA = CountSwaps([CountCompares(x) for x in inputList])
+# print(sort(countA))
