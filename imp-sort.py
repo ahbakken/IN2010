@@ -103,14 +103,17 @@ def heapSort(array):
 
 #quicksort
 #moves elements that are smaller left, and bigger rigth than a given index
+
+import random
 def partition(A, low, high):
     # p = int(math.floor((len(A)/2)))
-    p = 0
+    p = random.randint(low, high)
     A[p], A[high] = A[high], A[p]
     pivot = A[high]
     left = low
     right = high - 1
     while left <= right:
+        # print(A)
         while left <= right and A[left] <= pivot:
             left+=1
         while right >= left and A[right] >= pivot:
@@ -118,7 +121,7 @@ def partition(A, low, high):
         if left < right:
             A[left], A[right] = A[right], A[left]
 
-    A[left], A[right] = A[right], A[left]
+    A[left], A[high] = A[high], A[left]
     return left
 
 def quickSort(A, low, high):
