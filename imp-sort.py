@@ -101,6 +101,43 @@ def heapSort(array):
 # print("After  heapsort sort", heapSort(inputList))
 # print("__________________________________________________________")
 
+#mergesort
+#split array in two, sort the two halfs, merge them together
+# use merge sort recursive
+# O(n log(n))
+def mergesort(array):
+    n = len(array)
+    if n <= 1:
+        return array
+    i = int(math.floor((n/2)))
+    a1 = mergesort(array[0:i])
+    a2 = mergesort(array[i:n])
+    return merge(a1, a2, array)
+
+def merge(A1, A2, A):
+    i = 0
+    j = 0
+    while i<len(A1) and j<len(A2):
+        if A1[i] < A2[j]:
+            A[j+i] = A1[i]
+            i+=1
+        else:
+            A[j+i] = A2[j]
+            j+=1
+    while i<len(A1):
+        A[j+i] = A1[i]
+        i+=1
+    while j<len(A2):
+        A[j+i] = A2[j]
+        j+=1
+    return A
+
+inputList = [1, 5, 12, 34, 54, 42, 33, 65, 56, 555, 64, 13 ,47 , 0]
+print("Before mergesort", inputList)
+print("After  mergesort", mergesort(inputList))
+print("__________________________________________________________")
+
+
 #quicksort
 #moves elements that are smaller left, and bigger rigth than a given index
 
@@ -132,9 +169,8 @@ def quickSort(A, low, high):
     quickSort(A, p+1, high)
     return A
 
+# inputList = [1, 5, 12, 34, 54, 42, 33, 65, 56, 555, 64, 13 ,47 , 0]
+# print("Before quicksort sort", inputList)
+# print("After  quicksort sort", quickSort(inputList, 0, (len(inputList)-1)))
+# print("__________________________________________________________")
 
-
-inputList = [1, 5, 12, 34, 54, 42, 33, 65, 56, 555, 64, 13 ,47 , 0]
-print("Before quicksort sort", inputList)
-print("After  quicksort sort", quickSort(inputList, 0, (len(inputList)-1)))
-print("__________________________________________________________")
