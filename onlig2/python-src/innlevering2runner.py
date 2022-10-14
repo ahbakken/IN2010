@@ -13,9 +13,9 @@ import merge
 # Put the sorting algorithms under test for part 1 here
 ALGS1 = [insertion.sort, quick.sort, bubble.sort, merge.sort]
 # Put the sorting algorithms under test for part 2 here
-ALGS2 = [bubble.sort, merge.sort]
+ALGS2 = [insertion.sort, quick.sort, bubble.sort, merge.sort]
 # Time limit for a single sorting in milliseconds
-TIME_LIMIT_MS = 100000;
+TIME_LIMIT_MS = 1000;
 # How much n grows each iteration for part 2
 INCREMENT = 1;
 
