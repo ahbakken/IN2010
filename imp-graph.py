@@ -126,4 +126,12 @@ def dfsVisitMod(graph, u, visited, stack):
             dfsVisitMod(graph, uv[1], visited, stack)
     stack.append(u)
 
-print(dfsTopSort(g))
+#print(dfsTopSort(g))
+
+#Weighted graphs week 40
+
+def dijkstras(G, s):
+    visited = set()
+    dist = []
+    queue = []
+    dist[s] = 0 
