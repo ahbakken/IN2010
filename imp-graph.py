@@ -6,6 +6,9 @@
 #Depth first search, 
 #Recursive
 #visit
+
+
+
 def dfsVisit(graph, start, visited):
     visited.add(start)
     for v in graph[1]:
@@ -106,7 +109,7 @@ def topSort(graphDict):
         print('Error: Graph contains a cycle and cannot be topologically ordered.')
     return output 
 
-gdict = {'a': ('b', 'e'), 'b': ('c'), 'c': [], 'd': [], 'e':('d')}
+gdict = {'a': ('b', 'e'), 'b': ('c'), 'c': [], 'd': [], 'e':('d', 'b')}
 # print(gdict['a'])
 
 # print(topSort(gdict))
@@ -129,9 +132,34 @@ def dfsVisitMod(graph, u, visited, stack):
 #print(dfsTopSort(g))
 
 #Weighted graphs week 40
+#G = (V, E), 
+#   V is set with nodes 
+#   E is set with edges (node pairs that are connected)
+import math
+
+v = {'a', 'b', 'c', 'd', 'e'}
+e = {('a', 'b'), ('b', 'c'), ('c', 'a'), ('e', 'd'), ('a', 'c')}
+g = [v, e]
+
 
 def dijkstras(G, s):
-    visited = set()
-    dist = []
+    dist = {}
     queue = []
-    dist[s] = 0 
+    nodes = G[1]
+    edges = G[2]
+    for v in nodes:
+        dist[v] = math.inf
+        queue.append(v)
+    dist[s] = 0
+    for value in dist.keyes:
+        
+    #decrease prioroty queue (?)
+    #sort it after priority?
+    #from high to low, pop to remove priority
+
+    while queue.len() > 0:
+        u = queue.pop
+        for e in edges:
+            c = dist[e[0]] + weight(e[0], e[0])
+
+kart = dijkstras(g, v[0])
