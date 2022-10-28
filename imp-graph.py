@@ -131,35 +131,106 @@ def dfsVisitMod(graph, u, visited, stack):
 
 #print(dfsTopSort(g))
 
+
+#makes graphs 
+class Graph(object):
+    def __init__(self, nodes, init_graph):
+        self.nodes = nodes
+        self.graph = self.construct_graph(nodes, init_graph)
+        
+    def construct_graph(self, nodes, init_graph):
+        graph = {}
+        for node in nodes:
+            graph[node] = {}
+
+        #update() inserts specified items into the dictionary
+        graph.update(init_graph)
+
+        for node, edges in graph.items():
+            for adjecent_node, value in edges.items():
+                if graph[adjecent_node].get(node, False) == False:
+                    graph[adjecent_node][node] = value
+        return graph
+    
+    def get_nodes(self):
+        # "Returns the nodes of the graph."
+        return self.nodes
+    
+    def get_outgoing_edges(self, node):
+        # "Returns the neighbors of a node."
+        connections = []
+        for out_node in self.nodes:
+            if self.graph[node].get(out_node, False) != False:
+                connections.append(out_node)
+        return connections
+
+    def value(self, node1, node2):
+        # "Returns the value of an edge between two nodes."
+        return self.graph[node1][node2]
+
+    
 #Weighted graphs week 40
 #G = (V, E), 
 #   V is set with nodes 
 #   E is set with edges (node pairs that are connected)
-import math
-
-v = {'a', 'b', 'c', 'd', 'e'}
-e = {('a', 'b'), ('b', 'c'), ('c', 'a'), ('e', 'd'), ('a', 'c')}
-g = [v, e]
-
+import sys
 
 def dijkstras(G, s):
+    unvisited_nodes = list(G.get_nodes())
     dist = {}
-    queue = []
-    nodes = G[1]
-    edges = G[2]
-    for v in nodes:
-        dist[v] = math.inf
-        queue.append(v)
+    previous_nodes= {}
+
+    for v in unvisited_nodes:
+        dist[v] = sys.maxsize
     dist[s] = 0
-    for value in dist.keyes:
-        
-    #decrease prioroty queue (?)
-    #sort it after priority?
-    #from high to low, pop to remove priority
 
-    while queue.len() > 0:
-        u = queue.pop
+    while len(unvisited_nodes) > 0:
+        current_min_node = None
+        for node in unvisited_nodes:
+            if current_min_node == None:
+                current_min_node = node
+            elif dist[node] < dist[current_min_node]:
+                current_min_node = node
+
+        edges = G.get_outgoing_edges(current_min_node)
         for e in edges:
-            c = dist[e[0]] + weight(e[0], e[0])
+            temp_val = dist[current_min_node] + G.value(current_min_node, e)
+            if temp_val < dist[e]:
+                dist[e] = temp_val
+                previous_nodes[e] = current_min_node
+        
+        unvisited_nodes.remove(current_min_node)
+    
+    return previous_nodes, dist
+   
+def print_result(previous_nodes, shortest_path, start_node, target_node):
+    path = []
+    node = target_node
+    
+    while node != start_node:
+        path.append(node)
+        node = previous_nodes[node]
+ 
+    # Add the start node manually
+    path.append(start_node)
+    
+    print("We found the following best path with a value of {}.".format(shortest_path[target_node]))
+    print(" -> ".join(reversed(path)))
 
-kart = dijkstras(g, v[0])
+v = ['a', 'b', 'c', 'd', 'e']
+
+init_graph = {}
+for node in v:
+    init_graph[node] = {}
+
+init_graph['a']['b'] = 3
+init_graph['a']['c'] = 6
+init_graph['c']['a'] = 4
+init_graph['b']['e'] = 2
+init_graph['e']['d'] = 1
+
+graph = Graph(v, init_graph) 
+
+kart = dijkstras(graph, 'a')
+previous_nodes, shortest_path = kart
+print_result(previous_nodes, shortest_path, start_node="a", target_node="d")
