@@ -233,4 +233,58 @@ graph = Graph(v, init_graph)
 
 kart = dijkstras(graph, 'a')
 previous_nodes, shortest_path = kart
-print_result(previous_nodes, shortest_path, start_node="a", target_node="d")
+# print_result(previous_nodes, shortest_path, start_node="a", target_node="d")
+
+#bellman-ford algorithm for shortest path
+# knows when a cycle is negative
+
+def bellmanFord(G, s):
+    unvisited_nodes = list(G.get_nodes())
+    dist = {}
+    previous_nodes = {}
+    for node in unvisited_nodes:
+        dist[node] = sys.maxsize
+    dist[s] = 0
+
+    current_min_node = None
+    for node in unvisited_nodes:
+        if current_min_node == None:
+            current_min_node = node
+        elif dist[node] < dist[current_min_node]:
+            current_min_node = node
+
+    edges = G.get_outgoing_edges(current_min_node)
+    iter = len(unvisited_nodes) - 1
+    
+    for i in range(len(unvisited_nodes)-1):
+        for e in edges:
+            temp_val = dist[current_min_node] + G.value(current_min_node, e)
+            if temp_val < dist[e]:
+                dist[e] = temp_val
+                previous_nodes[e] = current_min_node
+        
+    for e in edges:
+        temp_val = dist[current_min_node] + G.value(current_min_node, e)
+        if temp_val < dist[e]:
+            print('Error: G contains a negative cycle')
+            return
+    
+    return dist
+
+nodes = ['a', 'b', 'c', 'd', 'e']
+
+init_graph = {}
+for node in nodes:
+    init_graph[node] = {}
+
+init_graph['a']['b'] = 3
+init_graph['a']['c'] = -3
+init_graph['c']['a'] = 4
+init_graph['b']['e'] = 2
+init_graph['e']['d'] = -1
+
+graph_bell = Graph(nodes, init_graph) 
+
+shortest_path = bellmanFord(graph_bell, 'a')
+print(shortest_path)
+    
