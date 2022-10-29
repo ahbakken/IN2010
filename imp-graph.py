@@ -290,7 +290,63 @@ print(shortest_path)
 #   V is set with nodes 
 #   E is set with edges (node pairs that are connected)
 #   When G is a directed acyclic graph (DAG)
-def dagShortestPaths(G, s):
-    dist = dict()
-    for node in G:
-        dist[node] = float("inf")
+
+#Python program to print topological sorting of a DAG
+from collections import defaultdict
+ 
+#Class to represent a graph
+class GraphDAG:
+    def __init__(self,vertices):
+        self.graph = defaultdict(list) #dictionary containing adjacency List
+        self.V = vertices #No. of vertices
+ 
+    # function to add an edge to graph
+    def addEdge(self,u,v,w):
+        self.graph[u].append([v, w])
+ 
+    # A recursive function used by topologicalSort
+    def topologicalSortUtil(self,v,visited,stack):
+ 
+        # Mark the current node as visited.
+        visited[v] = True
+ 
+        # Recur for all the vertices adjacent to this vertex
+        for i in self.graph[v]:
+            if visited[i] == False:
+                self.topologicalSortUtil(i,visited,stack)
+ 
+        # Push current vertex to stack which stores result
+        stack.insert(0,v)
+ 
+    # The function to do Topological Sort. It uses recursive
+    # topologicalSortUtil()
+    def topologicalSort(self):
+        # Mark all the vertices as not visited
+        visited = [False]*self.V
+        stack =[]
+ 
+        # Call the recursive helper function to store Topological
+        # Sort starting from all vertices one by one
+        for i in range(self.V):
+            if visited[i] == False:
+                self.topologicalSortUtil(i,visited,stack)
+ 
+        # Print contents of stack
+        return stack
+    #This code is contributed by Neelam Yadav
+    
+    # def shortestPathDAG(self, start):
+    #     dist = dict()
+    #     for node in self.topologicalSort:
+            
+ 
+gDAG= GraphDAG(6)
+gDAG.addEdge('a', 'd', 1)
+gDAG.addEdge('a', 'f', 3)
+gDAG.addEdge('b', 'f', 4)
+gDAG.addEdge('b', 'e', 1)
+gDAG.addEdge('d', 'c', 3)
+gDAG.addEdge('c', 'e', 4)
+
+print(gDAG.topologicalSort())
+
