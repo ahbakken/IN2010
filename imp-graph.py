@@ -173,6 +173,7 @@ class Graph(object):
 #G = (V, E), 
 #   V is set with nodes 
 #   E is set with edges (node pairs that are connected)
+from genericpath import exists
 import sys
 
 def dijkstras(G, s):
@@ -233,58 +234,63 @@ graph = Graph(v, init_graph)
 
 kart = dijkstras(graph, 'a')
 previous_nodes, shortest_path = kart
-# print_result(previous_nodes, shortest_path, start_node="a", target_node="d")
+print_result(previous_nodes, shortest_path, start_node="a", target_node="d")
+
+print(kart[1])
+
+#G = (V, E), 
+#   V is set with nodes 
+#   E is set with edges (node pairs that are connected)
+#graph for bellman ford
+class Graph_BellmanFord:
+    def __init__(self, nodes):
+        self.nodes = nodes # Total number of vertices in the graph
+        self.graph = []
+
+    def add_edge(self, s, d, w): #start,  destination, weight
+        self.graph.append([s, d, w])
+
+    def bellman_ford(self, start):
+        dist = dict()
+        for node in self.nodes:
+            dist[node] = float("Inf")
+        dist[start] = 0
+
+        for _ in range(len(self.graph)-1):
+            for s, d, w in self.graph:
+                if dist[s] != float("Inf") and dist[s] + w < dist[d]:
+                    dist[d] = dist[s] + w
+
+        for s, d, w in self.graph:
+            if dist[s] != float("Inf") and dist[s] + w < dist[d]:
+                print("error: Negative cycle exists")
+                return
+        
+        return dist
+
 
 #bellman-ford algorithm for shortest path
 # knows when a cycle is negative
 
-def bellmanFord(G, s):
-    unvisited_nodes = list(G.get_nodes())
-    dist = {}
-    previous_nodes = {}
-    for node in unvisited_nodes:
-        dist[node] = sys.maxsize
-    dist[s] = 0
-
-    current_min_node = None
-    for node in unvisited_nodes:
-        if current_min_node == None:
-            current_min_node = node
-        elif dist[node] < dist[current_min_node]:
-            current_min_node = node
-
-    edges = G.get_outgoing_edges(current_min_node)
-    iter = len(unvisited_nodes) - 1
-    
-    for i in range(len(unvisited_nodes)-1):
-        for e in edges:
-            temp_val = dist[current_min_node] + G.value(current_min_node, e)
-            if temp_val < dist[e]:
-                dist[e] = temp_val
-                previous_nodes[e] = current_min_node
-        
-    for e in edges:
-        temp_val = dist[current_min_node] + G.value(current_min_node, e)
-        if temp_val < dist[e]:
-            print('Error: G contains a negative cycle')
-            return
-    
-    return dist
-
 nodes = ['a', 'b', 'c', 'd', 'e']
 
-init_graph = {}
-for node in nodes:
-    init_graph[node] = {}
+graph_bell = Graph_BellmanFord(nodes) 
 
-init_graph['a']['b'] = 3
-init_graph['a']['c'] = -3
-init_graph['c']['a'] = 4
-init_graph['b']['e'] = 2
-init_graph['e']['d'] = -1
+graph_bell.add_edge('a', 'b', 3)
+graph_bell.add_edge('a', 'c', 6)
+graph_bell.add_edge('c', 'a', 4)
+graph_bell.add_edge('b', 'e', 2)
+graph_bell.add_edge('e', 'd', 1)
 
-graph_bell = Graph(nodes, init_graph) 
-
-shortest_path = bellmanFord(graph_bell, 'a')
+shortest_path = graph_bell.bellman_ford('a')
 print(shortest_path)
     
+
+#G = (V, E), 
+#   V is set with nodes 
+#   E is set with edges (node pairs that are connected)
+#   When G is a directed acyclic graph (DAG)
+def dagShortestPaths(G, s):
+    dist = dict()
+    for node in G:
+        dist[node] = float("inf")
