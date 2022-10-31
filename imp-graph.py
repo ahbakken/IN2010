@@ -173,6 +173,7 @@ class Graph(object):
 #G = (V, E), 
 #   V is set with nodes 
 #   E is set with edges (node pairs that are connected)
+
 from genericpath import exists
 from math import dist
 import sys
@@ -367,9 +368,87 @@ for edge in edges:
 g.addEdgeList(edges)
 
 g.topologicalSort()
-print(g.graph)
-
 weight = [2, 5, -2, 4, -5 ,-2]
+# print(g.dag(weight, 4))
 
-print(g.dag(weight, 4))
+# Prims algoritm for minimal spanning trees
+# https://www.geeksforgeeks.org/prims-minimum-spanning-tree-mst-greedy-algo-5/
+# The program is for adjacency matrix representation of the graph
 
+class PrimGraph:
+    def __init__(self, num_nodes):
+        self.num_nodes = num_nodes
+        self.graph = [[0 for column in range(num_nodes)]
+                      for row in range(num_nodes)]
+        
+    def add_edge(self, node1, node2, weight):
+        self.graph[node1][node2] = weight
+        self.graph[node2][node1] = weight
+
+
+    # A utility function to print the constructed MST stored in parent[]
+    def printMST(self, parent):
+        print("Edge \tWeight")
+        for i in range(1, self.num_nodes):
+            print(parent[i], "-", i, "\t", self.graph[i][parent[i]])
+
+    # A utility function to find the vertex with
+    # minimum distance value, from the set of vertices
+    # not yet included in shortest path tree
+    def minKey(self, key, mstSet):
+
+        # Initialize min value
+        min = sys.maxsize
+ 
+        for v in range(self.num_nodes):
+            if key[v] < min and mstSet[v] == False:
+                min = key[v]
+                min_index = v
+ 
+        return min_index 
+    
+    
+    def prim(self):
+        queue = [sys.maxsize] * self.num_nodes
+        parent = [None] * self.num_nodes
+        
+        queue[0] = 0
+        treeSet = [False] * self.num_nodes
+
+        parent[0] = -1 #set the root of the tree
+
+        for i in range(self.num_nodes):
+            u = self.minKey(queue, treeSet)
+            treeSet[u] = True
+
+            # Update dist value of the adjacent vertices
+            # of the picked vertex only if the current
+            # distance is greater than new distance and
+            # the vertex in not in the shortest path tree
+            for v in range(self.num_nodes):
+ 
+                # graph[u][v] is non zero only for adjacent vertices of m
+                # mstSet[v] is false for vertices not yet included in MST
+                # Update the key only if graph[u][v] is smaller than key[v]
+                if self.graph[u][v] > 0 and treeSet[v] == False and queue[v] > self.graph[u][v]:
+                    queue[v] = self.graph[u][v]
+                    parent[v] = u
+        
+        return parent
+
+
+
+example_graph = PrimGraph(9)
+
+example_graph.graph = [ [0, 4, 7, 0, 0, 0, 0, 0, 0],
+                        [4, 0, 11, 9, 0, 20, 0, 0, 0],
+                        [7, 11, 0, 0, 0, 1, 0, 0, 0],
+                        [0, 9, 0, 0, 2, 0, 6, 0, 0],
+                        [0, 0, 0, 2, 0, 1, 10, 5, 15],
+                        [0, 20, 1, 0, 1, 0, 0, 3, 0],
+                        [0, 0, 0, 6, 10, 0, 0, 0, 5],
+                        [0, 0, 0, 0, 5, 3, 0, 0, 12],
+                        [0, 0, 0, 0, 15, 0, 5, 12, 0] ]
+
+p = example_graph.prim()
+example_graph.printMST(p)
