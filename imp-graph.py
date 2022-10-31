@@ -174,6 +174,7 @@ class Graph(object):
 #   V is set with nodes 
 #   E is set with edges (node pairs that are connected)
 from genericpath import exists
+from math import dist
 import sys
 
 def dijkstras(G, s):
@@ -234,9 +235,9 @@ graph = Graph(v, init_graph)
 
 kart = dijkstras(graph, 'a')
 previous_nodes, shortest_path = kart
-print_result(previous_nodes, shortest_path, start_node="a", target_node="d")
+# print_result(previous_nodes, shortest_path, start_node="a", target_node="d")
 
-print(kart[1])
+# print(kart[1])
 
 #G = (V, E), 
 #   V is set with nodes 
@@ -246,7 +247,7 @@ class Graph_BellmanFord:
     def __init__(self, nodes):
         self.nodes = nodes # Total number of vertices in the graph
         self.graph = []
-
+        
     def add_edge(self, s, d, w): #start,  destination, weight
         self.graph.append([s, d, w])
 
@@ -282,8 +283,8 @@ graph_bell.add_edge('c', 'a', 4)
 graph_bell.add_edge('b', 'e', 2)
 graph_bell.add_edge('e', 'd', 1)
 
-shortest_path = graph_bell.bellman_ford('a')
-print(shortest_path)
+# shortest_path = graph_bell.bellman_ford('a')
+# print(shortest_path)
     
 
 #G = (V, E), 
@@ -291,18 +292,39 @@ print(shortest_path)
 #   E is set with edges (node pairs that are connected)
 #   When G is a directed acyclic graph (DAG)
 
+
 #Python program to print topological sorting of a DAG
+# https://www.geeksforgeeks.org/python-program-for-topological-sorting/
 from collections import defaultdict
  
 #Class to represent a graph
-class GraphDAG:
+class GraphTop:
     def __init__(self,vertices):
         self.graph = defaultdict(list) #dictionary containing adjacency List
         self.V = vertices #No. of vertices
+        self.edges = []
+
+    def addEdgeList(self, edges):
+        self.edges = edges
  
     # function to add an edge to graph
-    def addEdge(self,u,v,w):
-        self.graph[u].append([v, w])
+    def addEdge(self,u,v):
+        self.graph[u].append(v)
+
+    def dag(self, weight, start):
+        if len(weight) == len(self.graph):
+            dist = dict()
+            sortList = self.topologicalSort()
+            for u in range(len(sortList)):
+                    dist[u] = float("Inf")
+            dist[start] = 0
+
+            for _ in sortList:
+                for u, v, w in self.edges:
+                    tempHold = dist[u] + w
+                    if tempHold < dist[v]:
+                        dist[v] = tempHold
+        return dist
  
     # A recursive function used by topologicalSort
     def topologicalSortUtil(self,v,visited,stack):
@@ -333,20 +355,21 @@ class GraphDAG:
  
         # Print contents of stack
         return stack
-    #This code is contributed by Neelam Yadav
-    
-    # def shortestPathDAG(self, start):
-    #     dist = dict()
-    #     for node in self.topologicalSort:
-            
  
-gDAG= GraphDAG(6)
-gDAG.addEdge('a', 'd', 1)
-gDAG.addEdge('a', 'f', 3)
-gDAG.addEdge('b', 'f', 4)
-gDAG.addEdge('b', 'e', 1)
-gDAG.addEdge('d', 'c', 3)
-gDAG.addEdge('c', 'e', 4)
+g= GraphTop(6)
 
-print(gDAG.topologicalSort())
+
+edges = [(5, 2, 3), (5, 0, 4), (4, 0, 2), (4, 1, 6), (2, 3, 3),(3, 1, 3)]
+
+for edge in edges:
+    g.addEdge(edge[0], edge[1])
+ 
+g.addEdgeList(edges)
+
+g.topologicalSort()
+print(g.graph)
+
+weight = [2, 5, -2, 4, -5 ,-2]
+
+print(g.dag(weight, 4))
 
