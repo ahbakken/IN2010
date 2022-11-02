@@ -126,7 +126,7 @@ for movie in movieList:
             for actor2 in actorList:
                 if actor1 != actor2 and m_id in actor2.get_movies():
                     graph.add_edge(actor1, actor2, movie)
-                    graph.add_edge(actor2, actor1, movie) #for undirected graph
+                    # graph.add_edge(actor2, actor1, movie)
                     
 
 print("\nOppgave 1\n")
