@@ -41,13 +41,13 @@ movieList = [] #list of movies
 # make edges of movies, marvel_
 with open('marvel_movies.tsv', encoding="utf-8") as file:
     movies = csv.reader(file, delimiter="\t")
-    tall  = 0
+    #tall  = 0
     # printing data line by line
     for line in movies:
         movie = Movie(line[0], line[1], line[2])
         movieList.append(movie)
-        tall+= 1
-        # print('movie: ',tall)
+        #tall+= 1
+        #print('movie: ',tall)
 
 # open .tsv file as csv and read the file
 # make nodes of actors marvel_
@@ -55,16 +55,16 @@ with open('marvel_actors.tsv', encoding="utf-8") as file:
     actors = csv.reader(file, delimiter="\t")
      
     # printing data line by line
-    tall  = 1
+    #tall  = 1
     for line in actors:
         actor = Actor(line[0], line[1])
         actorList.append(actor)
         i = 2
         while i < len(line): # adding movies to the actor
             actor.add_movie(line[i])
-            # print("actor: ", tall)
+            #print("actor: ", tall)
             i += 1
-        tall += 1
+        #tall += 1
         #send each line to make nodes
         #append nodes to list to send to graph
 
@@ -93,10 +93,32 @@ class Graph(object):
         return self.graph[node1][node2]
 
 
+#oppgave 2 - shortest path.   
+#Breadth-first search https://www.geeksforgeeks.org/building-an-undirected-graph-and-finding-shortest-path-using-dictionaries-in-python/
+def wfsSearch(graph, start, end):
+    queue = [[start]]
+    visited = []
+
+    if start == end:
+        return start
+    
+    while queue:
+        path = queue.pop(0) #dequeue, remove from start of list, index 0
+        node = path[-1]
+
+        if node not in visited:
+            neighbors = graph
+
+        for s, d, w in graph: #iterating through all the edges
+            if s == u and d not in visited:
+                visited.add(d)
+                queue.append(d) #enqueue, add to end of list
+    return path
+
+
 
 graph = Graph(actorList) #add nodes to graph
 
-teller = 0
 for movie in movieList:
     m_id = movie.get_id()
     for actor1 in actorList:
@@ -104,12 +126,13 @@ for movie in movieList:
             for actor2 in actorList:
                 if actor1 != actor2 and m_id in actor2.get_movies():
                     graph.add_edge(actor1, actor2, movie)
-                    graph.add_edge(actor2, actor1, movie)
-                    teller += 1
+                    graph.add_edge(actor2, actor1, movie) #for undirected graph
+                    
 
 print("\nOppgave 1\n")
 print("Nodes: ", len(actorList))
 print("Edges: ", len(graph.graph))
 
-for i in graph.graph:
-    print(i[0].get_name(), i[1].get_name(), i[2].get_name())
+# for i in graph.graph:
+#     print(i[0].get_name(), i[1].get_name(), i[2].get_name())
+ 
