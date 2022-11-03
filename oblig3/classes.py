@@ -66,3 +66,10 @@ class Graph(object):
             if s == node:
                 connections[d] = m
         return connections
+    
+    def get_neighbor_actors(self, node):
+        connections = set()
+        for s, d, m in self.graph:
+            if s == node:
+                connections.add(d)
+        return connections

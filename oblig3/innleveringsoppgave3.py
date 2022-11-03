@@ -2,6 +2,7 @@
 
 import csv
 import sys
+from collections import defaultdict, deque
 from classes import Actor, Graph, Movie
 
 #oppgave 1 - build the graph
@@ -109,14 +110,15 @@ print("\n--------------- OPPGAVE 3 ----------------\n")
 
 
 def chillestPath(graph, start, end):
-    unvisited_nodes = graph.get_nodes()
+    
+    unvisited_nodes = graph.get_nodes()[:] #will not mutate graph when remove is used
     dist = dict()
     previous_nodes = dict()
 
     for node in unvisited_nodes:
         dist[node] = sys.maxsize
     dist[start] = 0
-
+    
     while len(unvisited_nodes) > 0:
         current_min_node = None
         for node in unvisited_nodes:
@@ -156,12 +158,49 @@ def chillestPath(graph, start, end):
         i += 1
     #printing the path
     printFinal_path(final_path)
-    print('Total weight:', totalW)
+    print('Total weight:', round(totalW, 1))
     return dist
 
 
-sp = (chillestPath(graph, actorList[0], actorList[1]))
+sp = (chillestPath(graph, actorList[2], actorList[4]))
 
 #oppgave 4 - connected components
 print("\n--------------- OPPGAVE 4 ----------------\n")
 
+def findAllComponents(graph):
+    #get make graph with neighbours
+    dictGraph = defaultdict(set)
+    for actor in graph.get_nodes():
+        dictGraph[actor] = graph.get_neighbor_actors(actor)
+    
+    seen = set()
+    result = []
+    for node in dictGraph:
+        if node not in seen:
+            connected, seen = findComponents(node, seen, dictGraph)
+            result.append(connected)
+    return result
+
+
+def findComponents(node, seen, dictGraph):
+        result = []
+        nodes = set([node])
+        while nodes:
+            node = nodes.pop()
+            seen.add(node)
+            nodes = nodes or dictGraph[node] - seen
+            result.append(node)
+        return result, seen
+
+def sizeOfComponents(graph):
+    components = findAllComponents(graph)
+    lenCounter = []
+    for component in components:
+        lenCounter.append(len(component))
+    
+    repComp = dict((i, lenCounter.count(i)) for i in lenCounter)
+    for i in repComp:
+        print('There are', repComp[i], 'components of size', i)
+
+sizeOfComponents(graph)
+print('\n')
