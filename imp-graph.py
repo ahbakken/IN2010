@@ -210,7 +210,7 @@ def print_result(previous_nodes, shortest_path, start_node, target_node):
     while node != start_node:
         path.append(node)
         node = previous_nodes[node]
- 
+
     # Add the start node manually
     path.append(start_node)
     

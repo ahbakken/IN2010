@@ -1,6 +1,7 @@
 #oblig 3 IN2010
 
 import csv
+import sys
 from classes import Actor, Graph, Movie
 
 #oppgave 1 - build the graph
@@ -53,6 +54,15 @@ print("Edges: ", len(graph.graph))
 #oppgave 2 - shortest path through graph
 print("\n--------------- OPPGAVE 2 ----------------\n")
 
+def printFinal_path(final_path):
+    print(final_path[0][0].get_name())
+    i = 1
+    while i < len(final_path):
+        print('=== [',final_path[i][0].get_name(), '(', final_path[i][0].get_rating(), ') ] ===> ', final_path[i][1].get_name())
+        i += 1
+    return
+
+
 #width first search, takes actor nodes
 def shortestPath(graph, start, end):
     if start == end:
@@ -85,12 +95,7 @@ def shortestPath(graph, start, end):
                                 final_path.append([movie, d]) #add movie and actor to list
                         i += 1
                     #printing the path
-                    print(final_path[0][0].get_name())
-                    i = 1
-                    while i < len(final_path):
-                        print('=== [',final_path[i][0].get_name(), '] ===> ', final_path[i][1].get_name())
-                        i += 1
-                    print('\n')
+                    printFinal_path(final_path)
                     return final_path  
             visited.add(current_node)
 
@@ -99,7 +104,64 @@ def shortestPath(graph, start, end):
 
 sp = (shortestPath(graph, actorList[2], actorList[4]))
 
-#oppgave 23 - chillest path through graph
+#oppgave 3 - chillest path through graph
 print("\n--------------- OPPGAVE 3 ----------------\n")
 
+
+def chillestPath(graph, start, end):
+    unvisited_nodes = graph.get_nodes()
+    dist = dict()
+    previous_nodes = dict()
+
+    for node in unvisited_nodes:
+        dist[node] = sys.maxsize
+    dist[start] = 0
+
+    while len(unvisited_nodes) > 0:
+        current_min_node = None
+        for node in unvisited_nodes:
+            if current_min_node == None:
+                current_min_node = node
+            elif dist[node] < dist[current_min_node]:
+                current_min_node = node
+
+        neighbors = graph.get_neighbors(current_min_node)
+        for neighbor in neighbors:
+            temp_val = dist[current_min_node] + (10 - float(neighbors[neighbor].get_rating()))
+            if temp_val < dist[neighbor]:
+                dist[neighbor] = temp_val
+                previous_nodes[neighbor] = current_min_node
+        
+        unvisited_nodes.remove(current_min_node)
+      
+    new_path = []
+    node = end
+    
+    while node != start:
+        new_path.append(node)
+        node = previous_nodes[node]
+ 
+    new_path.append(start)
+    new_path.reverse()
+
+    
+    final_path = [[start]]
+    i = 0
+    totalW = 0
+    while i < len(new_path)-1:
+        for s, d, movie in graph.graph:
+            if new_path[i] == s and new_path[i+1] == d:
+                final_path.append([movie, d]) #add movie and actor to list
+                totalW += (10-float(movie.get_rating()))
+        i += 1
+    #printing the path
+    printFinal_path(final_path)
+    print('Total weight:', totalW)
+    return dist
+
+
+sp = (chillestPath(graph, actorList[0], actorList[1]))
+
+#oppgave 4 - connected components
+print("\n--------------- OPPGAVE 4 ----------------\n")
 
