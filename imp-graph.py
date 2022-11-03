@@ -6,9 +6,6 @@
 #Depth first search, 
 #Recursive
 #visit
-
-
-
 def dfsVisit(graph, start, visited):
     visited.add(start)
     for v in graph[1]:
