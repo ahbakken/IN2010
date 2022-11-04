@@ -12,7 +12,7 @@ actorList = [] #list of actors, nodes
 movieList = [] #list of movies, edges
 
 # make edges of movies, marvel_
-with open('marvel_movies.tsv', encoding="utf-8") as file:
+with open('movies.tsv', encoding="utf-8") as file:
     movies = csv.reader(file, delimiter="\t")
     # printing data line by line
     for line in movies:
@@ -22,7 +22,7 @@ with open('marvel_movies.tsv', encoding="utf-8") as file:
 
 # open .tsv file as csv and read the file
 # make nodes of actors marvel_
-with open('marvel_actors.tsv', encoding="utf-8") as file:
+with open('actors.tsv', encoding="utf-8") as file:
     actors = csv.reader(file, delimiter="\t")
     for line in actors:
         actor = Actor(line[0], line[1])
