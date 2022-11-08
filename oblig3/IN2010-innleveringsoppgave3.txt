@@ -1,0 +1,21 @@
+Oblig 3 IN2010 - ahbakken
+
+Kjøre fil:
+Filene movies.tsv, actors.tsv, classes.py skal ligge i samme mappe som innleveringsoppgave3.py
+
+- python3 innleveringsoppgave3.py
+
+Nodes: 119 205
+Edges: 10 137 836
+
+Får dobbelt av forventet svar på kanter, fordi det blir lagt til begge veier. 
+
+node1, node2, filmX
+node2, node1, filmX
+
+Kjøretiden er veldig lang (flere timer). 
+På grunn av dette har jeg ikke rukker å kjøre oppgave 3 og 4 med actor.tsv og movie.tsv
+Kunne funnet bedre løsninger, det er en del iterasjoner gjennom lister av kanter og skuespillere som kunne blitt løst smartere. 
+
+Marvel versjonene gjør det helt fint, grafen blir lagd og man kan finne stier mellom skuespillere. 
+
