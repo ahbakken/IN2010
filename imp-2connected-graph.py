@@ -127,7 +127,7 @@ gdict2 = {'a': ['b', 'c'], 'b': ['c', 'a'], 'c': ['b', 'd'], 'd': ['c', 'e'], 'e
 #clear directed graph
 gdict3 = {'a': ['b'], 'b': ['d'], 'c': ['b'], 'd': ['c', 'e'], 'e':[]}
 
-print(reverseGraph(gdict2))
+# print(reverseGraph(gdict2))
 
 
 
