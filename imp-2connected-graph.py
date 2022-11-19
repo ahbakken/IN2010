@@ -42,30 +42,92 @@ gdict1 = {'a': ['b', 'e'], 'b': ['c', 'a', 'e'], 'c': ['b', 'd'], 'd': ['c', 'e'
 
 gdict2 = {'a': ['b', 'c'], 'b': ['c', 'a'], 'c': ['b', 'd'], 'd': ['c', 'e'], 'e':['d']}
 
-print('The graph1 is 2-connected: ', isBiConnectedNaive(gdict1))
-print('The graph2 is 2-connected: ', isBiConnectedNaive(gdict2))
+# print('The graph1 is 2-connected: ', isBiConnectedNaive(gdict1))
+# print('The graph2 is 2-connected: ', isBiConnectedNaive(gdict2))
 
-
-
-
-class Graph:
-    count = 0
- 
-    def __init__(self, vertices):
-        self.V = vertices  # No. of vertices
-        self.graph = defaultdict(list)  # default dictionary to store graph
-        self.Time = 0
- 
-    # function to add an edge to graph
-    def addEdge(self, u, v):
-        self.graph[u].append(v)
-        self.graph[v].append(u)
-
-def addGraph(ordbok):
-    graph = Graph(len(ordbok))
-    for nokkel in ordbok.keys():
-        for node in ordbok[nokkel]:
-            graph.addEdge(nokkel, node)
-
+# ---------------------------------------------------------------
 
 # Finding separation nodes
+
+
+
+def separationVertices(graph):
+    s = list(graph)[0] #choosing first node
+    s_edges = graph[s]
+    depth[s] = 0
+    low[s] = 0
+    children = 0
+    
+    for i in range(len(s_edges)):
+        if s_edges[i] not in depth:
+            separationVerticesRec(graph, s_edges[i], 1)
+            children += 1
+    if children > 1:
+        seps.add(s)
+    
+    return seps 
+
+def separationVerticesRec(graph, u, d):
+    depth[u] = d
+    low[u] = d
+    new_edges = graph[u]
+
+    for v in new_edges:
+        if v in depth:
+            low[u] = min(low[u], depth[v])
+            continue
+            
+        
+        separationVerticesRec(graph, v, d+1)
+        low[u] = min(low[u], low[v])
+        if d <= low[v]:
+            seps.add(u)
+
+
+#this is 2-connected
+# depth = dict()
+# low = dict()
+# seps = set()
+# print('The graph1 separation nodes: ', separationVertices(gdict1))
+
+
+#this is not 2-connected
+# depth = dict()
+# low = dict()
+# seps = set()
+# print('The graph2 separation nodes: ', separationVertices(gdict2))
+
+
+#use separationVertices to test is a graph is 2-connected
+def isBiConnected(graph):
+    return len(separationVertices(graph)) < 1
+
+depth = dict()
+low = dict()
+seps = set()
+print('Graph1 is 2-connected test with separation: ', isBiConnected(gdict1))
+
+depth = dict()
+low = dict()
+seps = set()
+print('Graph2 is 2-connected test with separation: ', isBiConnected(gdict2))
+
+# Graph class, might be used at some point...
+# class Graph:
+#     count = 0
+ 
+#     def __init__(self, vertices):
+#         self.V = vertices  # No. of vertices
+#         self.graph = defaultdict(list)  # default dictionary to store graph
+#         self.Time = 0
+ 
+#     # function to add an edge to graph
+#     def addEdge(self, u, v):
+#         self.graph[u].append(v)
+#         self.graph[v].append(u)
+
+# def addGraph(ordbok):
+#     graph = Graph(len(ordbok))
+#     for nokkel in ordbok.keys():
+#         for node in ordbok[nokkel]:
+#             graph.addEdge(nokkel, node)
