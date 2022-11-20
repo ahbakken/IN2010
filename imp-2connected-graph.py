@@ -126,8 +126,61 @@ gdict1 = {'a': ['b', 'e'], 'b': ['c', 'a', 'e'], 'c': ['b', 'd'], 'd': ['c', 'e'
 gdict2 = {'a': ['b', 'c'], 'b': ['c', 'a'], 'c': ['b', 'd'], 'd': ['c', 'e'], 'e':['d']}
 #clear directed graph
 gdict3 = {'a': ['b'], 'b': ['d'], 'c': ['b'], 'd': ['c', 'e'], 'e':[]}
+#components
+gdict4 = {'a': ['b'], 'b': ['c', 'e', 'f'], 'c': ['d', 'g'], 'd': ['c', 'h'], 'e':['a', 'f'], 'f':['g'], 'g':['f'], 'h':['g', 'd']}
 
 # print(reverseGraph(gdict2))
+
+
+# find the strongly connected components of a graph
+def dfsTopSort(graph):
+    stack = []
+    visited = set()
+    for u in graph.keys():
+        if u not in visited:
+            dfsVisitMod(graph, u, visited, stack)
+    return stack
+
+def dfsVisitMod(graph, u, visited, stack):
+    visited.add(u)
+    for edge in graph[u]:
+        if edge not in visited:
+            dfsVisitMod(graph, edge, visited, stack)
+    stack.append(u)
+
+def stronglyConnectedComponents(graph):
+    stack = dfsTopSort(graph)
+    inv_graph = reverseGraph(graph)
+    visited = set()
+    components = []
+
+    for u in reversed(stack):
+        if u not in visited:
+            component = []
+            dfsVisitMod(inv_graph, u, visited, component)
+            components.append(component)
+
+    return components
+
+
+
+gdict4 = {'a': ['b'], 'b': ['c', 'e', 'f'], 'c': ['d', 'g'], 'd': ['c', 'h'], 'e':['a', 'f'], 'f':['g'], 'g':['f'], 'h':['g', 'd']}
+
+
+print(stronglyConnectedComponents(gdict4))
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -149,3 +202,7 @@ gdict3 = {'a': ['b'], 'b': ['d'], 'c': ['b'], 'd': ['c', 'e'], 'e':[]}
 #     for nokkel in ordbok.keys():
 #         for node in ordbok[nokkel]:
 #             graph.addEdge(nokkel, node)
+
+# v = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'}
+# e = {('a', 'b'), ('b', 'c'), ('b', 'e'), ('b', 'f'), ('c', 'd'), ('c', 'g'),('d', 'c'), ('d', 'h'), ('e', 'a'), ('e', 'f'), ('f', 'g'), ('g', 'f'), ('h', 'g'), ('h', 'd')}
+# g1 = [v, e]
